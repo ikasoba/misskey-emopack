@@ -1,8 +1,4 @@
 {
   "lock": false,
-  "imports": {
-    "csv/": "https://deno.land/std@0.211.0/csv/",
-    "cliffy/": "https://deno.land/x/cliffy@v1.0.0-rc.3/",
-    "zip/": "https://deno.land/x/zip@v1.2.5/"
-  }
+  "importMap": "./importmap.json"
 }

@@ -8,7 +8,7 @@ misskey向けにカスタム絵文字をzipにまとめます。
 ## Installation
 
 ```sh
-deno install -A -n gemopack https://raw.githubusercontent.com/ikasoba/misskey-emopack/main/cli.ts
+deno install -A --import-map https://raw.githubusercontent.com/ikasoba/misskey-emopack/main/importmap.json -n emopack https://raw.githubusercontent.com/ikasoba/misskey-emopack/main/cli.ts
 ```
 
 ## meta.csvの内容
