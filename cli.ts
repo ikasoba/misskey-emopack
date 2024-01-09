@@ -50,7 +50,7 @@ async function buildMeta(csv: string) {
     }
   }
 
-  for (let i = 0; i < source.length; i++) {
+  for (let i = 1; i < source.length; i++) {
     meta.emojis.push({
       downloaded: false,
       fileName: source[i][columns.file],
