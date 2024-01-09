@@ -57,7 +57,7 @@ async function buildMeta(csv: string) {
       emoji: {
         name: source[i][columns.name],
         category: source[i][columns.category],
-        aliases: source[i][columns.aliases].split(/\s+/),
+        aliases: source[i][columns.aliases]?.split(/\s+/) ?? [],
         license: (columns.license && source[i][columns.license]) || undefined,
       },
     });
