@@ -1,6 +1,6 @@
 import { parse } from "csv/mod.ts";
-import { Command } from "cliffy/command/mod.ts";
-import { compress } from "zip/mod.ts";
+import { Command } from "jsr:@cliffy/command@1.0.0-rc.7/";
+import { BlobWriter, ZipWriter } from "jsr:@zip-js/zip-js@2.7.57";
 
 export interface Meta {
   emojis: Emoji[];
@@ -70,13 +70,21 @@ async function buildMeta(csv: string) {
 
 async function pack(filename: string) {
   const meta = await buildMeta("meta.csv");
-  const files = ["meta.json"];
+  const blobw = new BlobWriter();
+  const w = new ZipWriter(blobw);
 
-  for (const emoji of meta.emojis) {
-    files.push(emoji.fileName);
+  for (const emoji of [{ fileName: "meta.json" }, ...meta.emojis]) {
+    const fd = await Deno.open(emoji.fileName);
+
+    await w.add(emoji.fileName, fd);
   }
 
-  await compress(files, filename.replace(/(?<!\.zip)$/, ".zip"));
+  await w.close();
+
+  await Deno.writeFile(
+    filename.replace(/(?<!\.zip)$/, ".zip"),
+    await blobw.getData().then((x) => x.bytes()),
+  );
 }
 
 await new Command()
