@@ -1,4 +1,4 @@
-import { parse } from "csv/mod.ts";
+import { parse } from "https://deno.land/std@0.224.0/csv/mod.ts";
 import { Command } from "jsr:@cliffy/command@1.0.0-rc.7/";
 import { BlobWriter, ZipWriter } from "jsr:@zip-js/zip-js@2.7.57";
 

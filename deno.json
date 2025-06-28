@@ -1,7 +1,6 @@
 {
   "lock": false,
   "imports": {
-    "csv/": "https://deno.land/std@0.224.0/csv/",
-    "zip/": "https://deno.land/x/zip@v1.2.5/"
+    "csv/": "https://deno.land/std@0.224.0/csv/"
   }
 }
