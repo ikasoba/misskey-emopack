@@ -9,6 +9,14 @@ misskey向けにカスタム絵文字をzipにまとめます。
 
 ```sh
 nix profile add github:ikasoba/misskey-emopack
+
+# or
+deno install -g -f jsr:@ikasoba/misskey-emopack
+```
+
+NPM でのインストールは未確認ですが `xjsr` を利用することで実行することができます。
+```sh
+npx xjsr @ikasoba/misskey-emopack
 ```
 
 ## meta.csvの内容
