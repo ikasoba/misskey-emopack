@@ -17,6 +17,7 @@ stdenv.mkDerivation (finalAttrs: {
     fileset = lib.fileset.unions [
       ./package.json
       ./pnpm-lock.yaml
+      ./build.ts
       ./cli.ts
     ];
   };
@@ -33,19 +34,21 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
     fetcherVersion = 4;
-    hash = "sha256-8vBTPM25U+prtiQ1ryig4WbQz+oDCr8/ftr5XkioPas=";
+    hash = "sha256-pfBVMKVAGRCN04//YstP0EPSaHKISsKAg4Mr1aULXWY=";
   };
 
   buildPhase = ''
     mkdir -p "$out/bin"
 
-    cp -r node_modules package.json cli.ts "$out/"
+    pnpm run build
+
+    cp -rp node_modules package.json dest "$out/"
 
     (
       echo '#!/usr/bin/env bash'
       printf 'NODE_PATH="%q:$NODE_PATH" node %q "$@"' \
         "$out/node_modules" \
-        "$out/cli.ts"
+        "$out/dest/cli.js"
     ) > "$out/bin/emopack"
 
     chmod +x "$out/bin/emopack"

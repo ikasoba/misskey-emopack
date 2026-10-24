@@ -2,7 +2,6 @@ import { parse } from "@std/csv";
 import { Command } from "@cliffy/command";
 import { BlobWriter, ZipWriter } from "@zip-js/zip-js";
 import fs from "node:fs/promises";
-import { parseArgs } from "node:util";
 
 export interface Meta {
   emojis: Emoji[];
@@ -90,8 +89,6 @@ async function pack(filename: string) {
   );
 }
 
-const { positionals: args } = parseArgs({ allowPositionals: true });
-
 await new Command()
   .command("build-meta [filename:string]")
   .action(async (_, filename) => {
@@ -101,4 +98,4 @@ await new Command()
   .action(async (_, filename) => {
     await pack(filename ?? "out.zip");
   })
-  .parse(args);
+  .parse();

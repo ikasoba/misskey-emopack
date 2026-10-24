@@ -17,13 +17,13 @@ importers:
       '@zip-js/zip-js':
         specifier: jsr:^2.24.0
         version: '@jsr/zip-js__zip-js@2.24.0'
-      esbuild:
-        specifier: ^0.28.2
-        version: 0.28.2
     devDependencies:
       '@types/node':
         specifier: ^26.6.5
         version: 26.6.5
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
 
 packages:
 
