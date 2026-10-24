@@ -1,6 +1,8 @@
-import { parse } from "https://deno.land/std@0.224.0/csv/mod.ts";
-import { Command } from "jsr:@cliffy/command@1.0.0-rc.7/";
-import { BlobWriter, ZipWriter } from "jsr:@zip-js/zip-js@2.7.57";
+import { parse } from "@std/csv";
+import { Command } from "@cliffy/command";
+import { BlobWriter, ZipWriter } from "@zip-js/zip-js";
+import fs from "node:fs/promises";
+import { parseArgs } from "node:util";
 
 export interface Meta {
   emojis: Emoji[];
@@ -23,7 +25,7 @@ function keys<O extends object>(obj: O) {
 }
 
 async function buildMeta(csv: string) {
-  const source = parse(await Deno.readTextFile(csv));
+  const source = parse(await fs.readFile(csv, "utf-8"));
 
   const meta: Meta = {
     emojis: [],
@@ -63,7 +65,7 @@ async function buildMeta(csv: string) {
     });
   }
 
-  Deno.writeTextFile("meta.json", JSON.stringify(meta));
+  fs.writeFile("meta.json", JSON.stringify(meta), { encoding: "utf-8" });
 
   return meta;
 }
@@ -74,18 +76,21 @@ async function pack(filename: string) {
   const w = new ZipWriter(blobw);
 
   for (const emoji of [{ fileName: "meta.json" }, ...meta.emojis]) {
-    const fd = await Deno.open(emoji.fileName);
+    await using fd = await fs.open(emoji.fileName);
+    const r = fd.readableWebStream() as ReadableStream;
 
-    await w.add(emoji.fileName, fd);
+    await w.add(emoji.fileName, r);
   }
 
   await w.close();
 
-  await Deno.writeFile(
+  await fs.writeFile(
     filename.replace(/(?<!\.zip)$/, ".zip"),
     await blobw.getData().then((x) => x.bytes()),
   );
 }
+
+const { positionals: args } = parseArgs({ allowPositionals: true });
 
 await new Command()
   .command("build-meta [filename:string]")
@@ -96,4 +101,4 @@ await new Command()
   .action(async (_, filename) => {
     await pack(filename ?? "out.zip");
   })
-  .parse(Deno.args);
+  .parse(args);
