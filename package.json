@@ -1,10 +1,10 @@
 {
   "type": "module",
   "name": "misskey-emopack",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "bin": {
-    "emopack": "./dest/cli.js"
+    "emopack": "./cli.ts"
   },
   "scripts": {
     "build": "node ./build.ts"

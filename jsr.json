@@ -1,0 +1,6 @@
+{
+  "name": "@ikasoba/misskey-emopack",
+  "version": "1.0.2",
+  "license": "MIT",
+  "exports": "./cli.ts"
+}
